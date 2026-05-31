@@ -1,6 +1,19 @@
 import axios from 'axios';
+import { getToken } from './AuthService';
 
 const TODO_API_URL = 'http://localhost:8080/api/todos'; 
+
+axios.interceptors.request.use(function (config) {
+
+     console.log("Request URL:", config.url);
+   // console.log("Token:", token);
+     
+        config.headers['Authorization'] = getToken(); // Assuming getToken() retrieves the token from local storage
+    
+    return config;
+}, function (error) {
+    return Promise.reject(error);
+});
 
 const todoService = {
     getTodos: () => {

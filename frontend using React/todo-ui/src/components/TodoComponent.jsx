@@ -10,6 +10,8 @@ const TodoComponent = () => {
     const [completed, setCompleted] = useState(false);
     const navigate = useNavigate();
     const { id } = useParams();
+
+
  function addOrUpdateTodo(e) {
     e.preventDefault();
     // Implementation for saving the todo (either creating a new one or updating an existing one)
