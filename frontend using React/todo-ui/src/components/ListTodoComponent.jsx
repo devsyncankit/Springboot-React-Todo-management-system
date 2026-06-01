@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import todoService from '../services/TodoServices';
 import { useNavigate } from 'react-router-dom';
+import { isUserAdmin } from '../services/AuthService';
 
 
 const ListTodoComponent = () => {
 
     const [todos, setTodos] = useState([]);
 
-    const navigator = useNavigate();    
+    const navigator = useNavigate();  
+    
+    const isAdmin = isUserAdmin(); // Check if the user has admin privileges
 
     useEffect(() => {
         console.log('Fetching todos from backend API...');
@@ -65,9 +68,12 @@ const ListTodoComponent = () => {
                                 <td>{todo.description}</td>
                                 <td>{todo.completed ? 'Yes' : 'No'}</td>
                                 <td>
-                                    {/* Action buttons for edit and delete can be added here */}
-                                    <button className='btn btn-info' onClick ={e => editTodo(todo.id)}>Edit</button>
-                                    <button className='btn btn-danger' onClick ={e => deleteTodo(todo.id)}>Delete</button>
+                                    {isAdmin && ( // Only show edit and delete buttons if the user is an admin
+                                        <>
+                                            <button className='btn btn-info' onClick ={e => editTodo(todo.id)}>Edit</button>
+                                            <button className='btn btn-danger' onClick ={e => deleteTodo(todo.id)}>Delete</button>
+                                        </>
+                                    )}
                                     <button className='btn btn-success' onClick ={e => todoService.CompleteTodo(todo.id).then(() => listTodos())}>Complete</button>
                                     <button className='btn btn-warning' onClick ={e => todoService.IncompleteTodo(todo.id).then(() => listTodos())}>Incomplete</button>
                                 </td>

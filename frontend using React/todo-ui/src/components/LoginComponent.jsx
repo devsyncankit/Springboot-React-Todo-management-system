@@ -21,11 +21,12 @@ const LoginComponent = () => {
             console.log('Inside login response:');
             console.log('Login successful:', response);
            // const token = 'Basic ' + window.btoa(usernameOrEmail + ':' + password);
-            const token ='Bearer ' + response.data.accessToken; // Assuming the token is returned in the response data
+            const token ='Bearer ' + response.data.accessToken;
+            const  role = response.data.role; // Assuming the role is returned in the response data
             console.log('Generated token:', token);
             storeToken(token); // Store the token in local storage or context for future use
             // Handle successful login (e.g., store token, redirect to dashboard)
-            saveLoggedInUser(usernameOrEmail); // Save the logged-in user's information
+            saveLoggedInUser(usernameOrEmail, role); // Save the logged-in user's information
             navigate('/todos'); // Redirect to the todos page after successful login
             console.log('Login successful, redirecting to todos page');
             window.location.reload(false); // Reload the page to update the UI based on the new authentication state

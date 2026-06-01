@@ -24,14 +24,17 @@ export const getToken = () => {
     return localStorage.getItem('token');
 };
 
-export const saveLoggedInUser = (username) => {
+export const saveLoggedInUser = (username,role) => {
     sessionStorage.setItem('loggedInUser', username);
+    sessionStorage.setItem('userRole', role); // Store the user's role in session storage
 };
 
 export const getLoggedInUser = () => {
     return sessionStorage.getItem('loggedInUser');
 };
-
+export const getUserRole = () => {
+    return sessionStorage.getItem('userRole');
+};
 export const logout = () => {
     localStorage.clear(); // Clear all local storage items, including the token
     sessionStorage.clear(); // Clear all session storage items, including the logged-in user
@@ -43,6 +46,14 @@ export const isUserLoggedIn = () => {
         return false;
     }
     return true;
+};
+
+export const isUserAdmin = () => {
+    const role = getUserRole();
+    if(role !=null && role === 'ROLE_ADMIN') {
+        return true;
+    }
+    return false;
 };
 
 export default authService;
