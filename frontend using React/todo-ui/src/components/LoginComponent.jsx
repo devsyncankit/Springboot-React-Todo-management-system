@@ -20,7 +20,8 @@ const LoginComponent = () => {
        await authService.login(credentials).then((response) => {
             console.log('Inside login response:');
             console.log('Login successful:', response);
-            const token = 'Basic ' + window.btoa(usernameOrEmail + ':' + password);
+           // const token = 'Basic ' + window.btoa(usernameOrEmail + ':' + password);
+            const token ='Bearer ' + response.data.accessToken; // Assuming the token is returned in the response data
             console.log('Generated token:', token);
             storeToken(token); // Store the token in local storage or context for future use
             // Handle successful login (e.g., store token, redirect to dashboard)

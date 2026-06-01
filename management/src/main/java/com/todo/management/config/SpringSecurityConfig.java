@@ -16,6 +16,10 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.todo.management.security.JwtAuthenticationEntryPoint;
+import com.todo.management.security.JwtAuthenticationFilter;
 
 import lombok.AllArgsConstructor;
 
@@ -26,6 +30,10 @@ public class SpringSecurityConfig {
 	
 	
 	private  UserDetailsService userDetailsService;
+	
+	private  JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	
+	private  JwtAuthenticationFilter jwtAuthenticationFilter;
 	
 	@Bean
 	public static PasswordEncoder passwordEncoder() {
@@ -45,6 +53,9 @@ public class SpringSecurityConfig {
 				authz.anyRequest().authenticated();
 			}).httpBasic(Customizer.withDefaults());
 	
+		http.exceptionHandling(exception -> exception
+			.authenticationEntryPoint(jwtAuthenticationEntryPoint));
+		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 	

@@ -18,6 +18,7 @@ import com.todo.management.entity.User;
 import com.todo.management.exception.TodoAPIException;
 import com.todo.management.repository.RoleRepository;
 import com.todo.management.repository.UserRepository;
+import com.todo.management.security.JwtTokenProvider;
 
 import lombok.AllArgsConstructor;
 
@@ -30,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
 	private RoleRepository roleRepository;
 	
 	private AuthenticationManager authenticationManager;
+	private JwtTokenProvider jwtTokenProvider;
 	
 	@Override
 	public String register(RegisterDto registerDto) {
@@ -65,7 +67,9 @@ public class AuthServiceImpl implements AuthService {
 				loginDto.getUsernameOrEmail(), loginDto.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
-		return "User logged in successfully!";
+		String token = jwtTokenProvider.generateToken(authentication);
+		
+		return token;
 	}
 
 }
